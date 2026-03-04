@@ -4,20 +4,22 @@ on: [push, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
+    # This runs the whole job inside the official Kivy container
+    container:
+      image: kivy/buildozer:master
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Build with Buildozer (Direct Docker)
-        # We use the official image directly to skip the "chown" bug
-        uses: docker://kivy/buildozer:master
-        with:
-          args: buildozer android debug
-        env:
-          # This variable tells Buildozer it's okay to run as root
-          BUILDOZER_ALLOW_KIVY_USER_ROOT: 1
-
+      - name: Build with Buildozer
+        run: |
+          # We tell Buildozer it's okay to run as root here
+          export BUILDOZER_ALLOW_KIVY_USER_ROOT=1
+          buildozer android debug
+        
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Synapse-Android-Package
+          name: Synapse-APK
           path: bin/*.apk
