@@ -1,5 +1,5 @@
 name: Build
-on: [push, workflow_dispatch]
+on:[push, workflow_dispatch]
 
 permissions:
   contents: write
@@ -9,16 +9,39 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout source code
+        uses: actions/checkout@v4
 
-      - name: Build with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
         with:
-          command: buildozer android debug
-          buildozer_version: master
-          buildozer_user: root
+          distribution: 'temurin'
+          java-version: '17'
 
-      - name: Upload APK
+      - name: Setup Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential git zip unzip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
+
+      - name: Install Python Dependencies
+        run: |
+          pip install --upgrade pip
+          # Pinning Cython to 0.29.33 is highly recommended to prevent recipe build errors with Kivy 2.2.1
+          pip install buildozer "cython==0.29.33" virtualenv
+
+      - name: Build Android APK
+        env:
+          # This automatically bypasses the prompt to accept Android SDK licenses
+          APP_ANDROID_ACCEPT_SDK_LICENSE: "1"
+        run: |
+          buildozer android debug
+
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: package
