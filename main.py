@@ -30,7 +30,7 @@ from kivymd.uix.list import OneLineAvatarIconListItem
 from kivymd.uix.button import MDFlatButton, MDIconButton, MDFillRoundFlatButton
 
 # --- GITHUB CSV URL (Encoded for spaces/brackets) ---
-RAW_URL = "https://raw.githubusercontent.com/Imoter2233/synapse_asset/main/ai_studio_code (3).csv"
+RAW_URL = "https://raw.githubusercontent.com/Imoter2233/synapse_asset/main/data.csv"
 CSV_URL = RAW_URL.replace(" ", "%20")
 
 # --- KIVY UI LAYOUT ---
