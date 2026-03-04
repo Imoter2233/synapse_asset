@@ -1,6 +1,10 @@
 name: Build
 on: [push, workflow_dispatch]
 
+permissions:
+  contents: write
+  actions: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,6 +16,7 @@ jobs:
         with:
           command: buildozer android debug
           buildozer_version: master
+          buildozer_user: root
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
