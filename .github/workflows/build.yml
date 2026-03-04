@@ -1,4 +1,4 @@
-name: Build
+name: Build Synapse APK
 on: [push, workflow_dispatch]
 
 jobs:
@@ -7,16 +7,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build with Buildozer (Docker Strategy)
-        uses: docker://kivy/buildozer:master
+      # This fix solves the "chown: invalid user: 'user'" error by 
+      # matching the runner's UID with the Docker container expectations.
+      - name: Fix permissions
+        run: |
+          sudo chown -R $USER:$USER .
+          sudo chmod -R 777 .
+
+      - name: Build with Buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1
         with:
-          args: buildozer android debug
-        env:
-          # This ensures Buildozer runs without permission drama
-          BUILDOZER_ALLOW_KIVY_USER_ROOT: 1
+          command: buildozer android debug
+          buildozer_version: master
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: package
+          name: Synapse-Android-Package
           path: bin/*.apk
