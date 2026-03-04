@@ -3,16 +3,19 @@ title = Synapse
 package.name = synapse
 package.domain = org.imoter
 source.dir = .
+# Added 'png' to include your assets
 source.include_exts = py,png,jpg,kv,atlas,json,csv
 version = 0.1
 
-# hostpython3 and openssl are MANDATORY for HTTPS requests to work
+# hostpython3 and openssl are REQUIRED for your HTTPS requests to work
 requirements = python3,kivy==2.2.1,kivymd,requests,urllib3,chardet,idna,certifi,hostpython3,openssl,jnius
 
 android.permissions = INTERNET
 android.api = 33
 android.minapi = 21
 android.archs = arm64-v8a, armeabi-v7a
+
+# Prevents the build from hanging on license prompts
 android.accept_sdk_license = True
 
 icon.filename = %(source.dir)s/logo.png
