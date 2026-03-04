@@ -1,15 +1,22 @@
 name: Build
 on: [push, workflow_dispatch]
+
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: ArtemSBulgakov/buildozer-action@v1
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build
+        uses: kivy/buildozer-action@master
         with:
           command: buildozer android debug
-          buildozer_version: stable
-      - uses: actions/upload-artifact@v4
+          buildozer_version: master
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
         with:
           name: package
           path: bin/*.apk
