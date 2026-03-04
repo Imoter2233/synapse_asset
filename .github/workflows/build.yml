@@ -6,16 +6,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Build
+      - name: Build with Buildozer
         uses: kivy/buildozer-action@master
         with:
           command: buildozer android debug
           buildozer_version: master
 
-      - name: Upload
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: package
