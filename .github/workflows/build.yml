@@ -1,15 +1,25 @@
 name: Build
 on: [push, workflow_dispatch]
+
+permissions:
+  contents: write
+  actions: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ArtemSBulgakov/buildozer-action@v1.6
+
+      - name: Build with Buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1
         with:
           command: buildozer android debug
           buildozer_version: master
-      - uses: actions/upload-artifact@v4
+          buildozer_user: root
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
         with:
           name: package
           path: bin/*.apk
