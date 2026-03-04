@@ -4,20 +4,18 @@ on: [push, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
-    # This runs the whole job inside the official Kivy container
-    container:
-      image: kivy/buildozer:master
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Build with Buildozer
-        run: |
-          # We tell Buildozer it's okay to run as root here
-          export BUILDOZER_ALLOW_KIVY_USER_ROOT=1
-          buildozer android debug
-        
+        uses: NickSane/buildozer-action@v1
+        with:
+          buildozer_version: master
+          command: buildozer android debug
+          # This bypasses the 'chown' issues by running as the runner user
+          repository_root: .
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
