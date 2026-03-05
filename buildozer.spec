@@ -6,9 +6,10 @@ source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,json,csv
 version = 0.1
 
-# REQUIREMENTS - Added openssl (for requests) and pillow (for KivyMD)
-# Removed 'android' as it causes conflicts.
-requirements = python3,kivy==2.3.0,kivymd,requests,urllib3,chardet,idna,certifi,jnius,openssl,pillow
+# REQUIREMENTS 
+# Swapped 'jnius' for 'pyjnius' (the correct Android recipe).
+# Removed redundant networking libs as 'requests' handles them.
+requirements = python3,kivy==2.3.0,kivymd,requests,pillow,pyjnius
 
 android.permissions = INTERNET
 android.api = 33
