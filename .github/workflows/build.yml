@@ -38,8 +38,8 @@ jobs:
         env:
           APP_ANDROID_ACCEPT_SDK_LICENSE: "1"
         run: |
-          # The 'clean' command ensures no leftover garbage from previous attempts breaks the build
-          buildozer android clean
+          # Removed the clean command because GitHub Actions is already a fresh, clean environment.
+          # We go straight into building the debug APK.
           buildozer android debug
 
       - name: Upload APK Artifact
