@@ -7,7 +7,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04  # <-- THE MAGIC FIX. This bypasses the Ubuntu 24.04 compiler bug!
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
@@ -26,20 +26,19 @@ jobs:
       - name: Install System Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential git zip unzip autoconf libtool pkg-config zlib1g-dev libncurses-dev libtinfo6 cmake libffi-dev libssl-dev
+          # Standard robust dependencies for Ubuntu 22.04
+          sudo apt-get install -y build-essential git zip unzip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
 
       - name: Install Buildozer and Cython
         run: |
           pip install --upgrade pip
-          # Pinned Cython for Kivy stability
-          pip install buildozer "cython==0.29.33" virtualenv
+          # We removed the Cython pin so Kivy 2.3.0 can use the newest Cython 3
+          pip install buildozer cython virtualenv
 
       - name: Build Android APK
         env:
           APP_ANDROID_ACCEPT_SDK_LICENSE: "1"
         run: |
-          # Removed the clean command because GitHub Actions is already a fresh, clean environment.
-          # We go straight into building the debug APK.
           buildozer android debug
 
       - name: Upload APK Artifact
