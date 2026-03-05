@@ -6,24 +6,22 @@ source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,json,csv
 version = 0.1
 
-# Requirements for your specific code
-# Note: Kivy is pinned to 2.2.1 for stability
-requirements = python3,kivy==2.2.1,kivymd,requests,urllib3,chardet,idna,certifi,android,jnius
+# REQUIREMENTS - Added openssl (for requests) and pillow (for KivyMD)
+# Removed 'android' as it causes conflicts.
+requirements = python3,kivy==2.3.0,kivymd,requests,urllib3,chardet,idna,certifi,jnius,openssl,pillow
 
-# Permissions for the CSV download
 android.permissions = INTERNET
-
-# Android specific configurations
 android.api = 33
 android.minapi = 21
 android.archs = arm64-v8a
+# Force a stable NDK version
+android.ndk = 25b
 
-# Your Logo settings
 icon.filename = %(source.dir)s/logo.png
 presplash.filename = %(source.dir)s/logo.png
 android.presplash_color = #000000
 
-# Force python-for-android to use the latest branch for API 33 compatibility
+# This is critical for API 33 compatibility
 p4a.branch = master
 
 [buildozer]
