@@ -31,12 +31,12 @@ jobs:
       - name: Install Python Dependencies
         run: |
           pip install --upgrade pip
-          # Pinning Cython to 0.29.33 is highly recommended to prevent recipe build errors with Kivy 2.2.1
+          # We pin Cython to 0.29.33 because Kivy 2.2.1 will fail to build with Cython 3.x
           pip install buildozer "cython==0.29.33" virtualenv
 
       - name: Build Android APK
         env:
-          # This automatically bypasses the prompt to accept Android SDK licenses
+          # Automatically accepts Android SDK licenses
           APP_ANDROID_ACCEPT_SDK_LICENSE: "1"
         run: |
           buildozer android debug
